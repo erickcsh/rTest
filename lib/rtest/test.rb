@@ -24,18 +24,22 @@ module RTest
     end
 
     private
+    def console
+      Console.instance
+    end
+
     def run_test_result
       begin
         run_expectations
-        puts "\t#{success_message}"
+        console.display_leveled_message(1, success_message, :green)
       rescue TestFailureError => error
         error_message(error)
       end
     end
 
     def error_message(error)
-      puts "\t#{@message}"
-      puts "\t\t#{error.message}"
+      console.display_leveled_message(1, @message, :red)
+      console.display_leveled_message(2, error.message, :red)
     end
 
     def run_expectations

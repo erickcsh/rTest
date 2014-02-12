@@ -14,7 +14,7 @@ module RTest
     end
 
     def run
-      puts @message
+      Console.instance.display_leveled_message(0, @message)
       @tests.map { |test| test.run }
     end
   end

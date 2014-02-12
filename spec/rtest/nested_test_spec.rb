@@ -13,11 +13,12 @@ end
 
 describe RTest::NestedTest, "#run" do
   let(:test) { double(:test).as_null_object }
+  let(:console) { double(:console).as_null_object }
 
   subject { described_class.new(A_CLASS, A_MESSAGE) { has_to } }
 
   before do
-    allow(STDOUT).to receive(:puts)
+    allow(RTest::Console).to receive(:instance) { console }
     allow(RTest::Test).to receive(:new) { test }
   end
 
@@ -25,7 +26,7 @@ describe RTest::NestedTest, "#run" do
 
   context "when there is a second message" do
     it "displays optional message" do
-      expect(STDOUT).to receive(:puts).once.with("#{A_CLASS}#{A_MESSAGE}")
+      expect(console).to receive(:display_leveled_message).with(0, "#{A_CLASS}#{A_MESSAGE}")
     end
   end
 
@@ -33,7 +34,7 @@ describe RTest::NestedTest, "#run" do
     subject { described_class.new(A_CLASS) }
 
     it "does not display optional message" do
-      expect(STDOUT).to receive(:puts).with("#{A_CLASS}")
+      expect(console).to receive(:display_leveled_message).with(0, "#{A_CLASS}")
     end
   end
 

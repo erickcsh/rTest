@@ -1,3 +1,4 @@
+require_relative 'rtest/console'
 require_relative 'rtest/equal'
 require_relative 'rtest/expect'
 require_relative 'rtest/nested_test'

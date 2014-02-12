@@ -26,6 +26,7 @@ end
 describe RTest::Test, "#run" do
   let(:passing_expectation) { double(:passing_expectation).as_null_object }
   let(:not_passing_expectation) { double(:not_passing_expectation).as_null_object }
+  let(:console) { double(:console).as_null_object }
 
   subject { described_class.new(A_MESSAGE) { expect(A_OBJECT) } }
 
@@ -35,7 +36,7 @@ describe RTest::Test, "#run" do
     allow(passing_expectation).to receive(:passing_message) { PASSING_MESSAGE }
     allow(not_passing_expectation).to receive(:pass?) { false }
     allow(not_passing_expectation).to receive(:failure_message) { FAILURE_MESSAGE }
-    allow(STDOUT).to receive(:puts)
+    allow(RTest::Console).to receive(:instance) { console }
   end
 
   after { subject.run }
@@ -47,7 +48,7 @@ describe RTest::Test, "#run" do
   context "when expectations pass" do
     context "when a message is provided" do
       it "displays message passing" do
-        expect(STDOUT).to receive(:puts).with("\t#{A_MESSAGE}")
+        expect(console).to receive(:display_leveled_message).with(1, A_MESSAGE, :green)
       end
     end
 
@@ -55,7 +56,7 @@ describe RTest::Test, "#run" do
       subject { described_class.new { expect(A_OBJECT) } }
 
       it "displays expectation provided message" do
-        expect(STDOUT).to receive(:puts).with("\t#{PASSING_MESSAGE}")
+        expect(console).to receive(:display_leveled_message).with(1, PASSING_MESSAGE, :green)
       end
     end
   end
@@ -64,7 +65,7 @@ describe RTest::Test, "#run" do
     subject { described_class.new(A_MESSAGE) }
 
     it "does not display anything" do
-      expect(STDOUT).not_to receive(:puts)
+      expect(console).not_to receive(:display_leveled_message)
     end
   end
 
@@ -76,11 +77,11 @@ describe RTest::Test, "#run" do
     end
 
     it "displays error message" do
-      expect(STDOUT).to receive(:puts).once.with("\t#{A_MESSAGE}")
+      expect(console).to receive(:display_leveled_message).once.with(1, A_MESSAGE, :red)
     end
 
     it "displays failure message" do
-      expect(STDOUT).to receive(:puts).once.with("\t\t#{not_passing_expectation.failure_message}")
+      expect(console).to receive(:display_leveled_message).once.with(2, not_passing_expectation.failure_message, :red)
     end
   end
 end
