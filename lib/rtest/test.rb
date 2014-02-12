@@ -44,7 +44,7 @@ module RTest
 
     def run_expectations
       @expectations.each do |expectation| 
-        raise TestFailureError, expectation.failure_message unless expectation.pass? 
+        raise TestFailureError, expectation.failure_message unless expectation.pass?
       end
     end
 
