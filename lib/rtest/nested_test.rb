@@ -9,7 +9,7 @@ module RTest
       instance_eval(&block) if block_given?
     end
 
-    def have_to(&block)
+    def has_to(&block)
       @tests << Test.new(&block)
     end
 

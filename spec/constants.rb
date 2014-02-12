@@ -8,3 +8,6 @@ FAILURE_MESSAGE_FOR_NOT_TO = "match, expecting somthing different to #{A_VALUE},
 A_CLASS = Class
 A_MESSAGE = 'a message'
 A_TEST = 'test'
+A_OBJECT = 1
+PASSING_MESSAGE = 'pass'
+FAILURE_MESSAGE = 'not pass'

@@ -1,10 +1,10 @@
 require 'rtest'
 require 'constants'
 
-describe RTest::NestedTest, "#have_to" do
+describe RTest::NestedTest, "#has_to" do
   let(:test) { double(:test).as_null_object }
 
-  subject { described_class.new(A_CLASS) { have_to } }
+  subject { described_class.new(A_CLASS) { has_to } }
 
   before { allow(RTest::Test).to receive(:new) { test } }
 
@@ -14,7 +14,7 @@ end
 describe RTest::NestedTest, "#run" do
   let(:test) { double(:test).as_null_object }
 
-  subject { described_class.new(A_CLASS, A_MESSAGE) { have_to } }
+  subject { described_class.new(A_CLASS, A_MESSAGE) { has_to } }
 
   before do
     allow(STDOUT).to receive(:puts)
