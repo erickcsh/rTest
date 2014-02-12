@@ -35,9 +35,14 @@ describe RTest::Test, "#run" do
     allow(passing_expectation).to receive(:passing_message) { PASSING_MESSAGE }
     allow(not_passing_expectation).to receive(:pass?) { false }
     allow(not_passing_expectation).to receive(:failure_message) { FAILURE_MESSAGE }
+    allow(STDOUT).to receive(:puts)
   end
 
   after { subject.run }
+
+  it "runs the expectations" do
+    expect(passing_expectation).to receive(:pass?)
+  end
 
   context "when expectations pass" do
     context "when a message is provided" do
@@ -52,6 +57,30 @@ describe RTest::Test, "#run" do
       it "displays expectation provided message" do
         expect(STDOUT).to receive(:puts).with("\t#{PASSING_MESSAGE}")
       end
+    end
+  end
+
+  context "when there are no expectations" do
+    subject { described_class.new(A_MESSAGE) }
+
+    it "does not display anything" do
+      expect(STDOUT).not_to receive(:puts)
+    end
+  end
+
+  context "when expectations does not pass" do
+    before { allow(RTest::Expect).to receive(:new){ not_passing_expectation } }
+
+    it "raises an error" do
+      expect { receive(:rescue).with(RTest::TestFailureError) }
+    end
+
+    it "displays error message" do
+      expect(STDOUT).to receive(:puts).once.with("\t#{A_MESSAGE}")
+    end
+
+    it "displays failure message" do
+      expect(STDOUT).to receive(:puts).once.with("\t\t#{not_passing_expectation.failure_message}")
     end
   end
 end
