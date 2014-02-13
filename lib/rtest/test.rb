@@ -1,6 +1,8 @@
 module RTest
   class Test
 
+    FAIL = "FAILED"
+
     attr_reader :expectations
 
     def initialize(message = nil, &block)
@@ -10,7 +12,9 @@ module RTest
     end
 
     def expect(object)
-      @expectations << Expect.new(object)
+      expectation = Expect.new(object)
+      @expectations << expectation
+      expectation
     end
 
     def equal(object)
@@ -38,7 +42,7 @@ module RTest
     end
 
     def error_message(error)
-      console.display_leveled_message(1, @message, :red)
+      console.display_leveled_message(1, failure_message, :red)
       console.display_leveled_message(2, error.message, :red)
     end
 
@@ -54,6 +58,10 @@ module RTest
 
     def success_message
       @message || first_expectation_message
+    end
+
+    def failure_message
+      @message || FAIL
     end
 
     def first_expectation_message

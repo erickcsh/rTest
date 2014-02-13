@@ -1,4 +1,7 @@
 #!/usr/bin/ruby
 
-require 'rtest'
+require_relative '../lib/rtest'
 
+include RTest::MainTest
+
+run

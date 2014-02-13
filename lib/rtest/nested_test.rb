@@ -9,8 +9,8 @@ module RTest
       instance_eval(&block) if block_given?
     end
 
-    def has_to(&block)
-      @tests << Test.new(&block)
+    def has_to(message = nil, &block)
+      @tests << Test.new(message, &block)
     end
 
     def run
